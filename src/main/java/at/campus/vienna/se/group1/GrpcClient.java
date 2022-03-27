@@ -16,7 +16,7 @@ public class GrpcClient {
     private final ManagedChannel channel;
     private final CurrencyConverterGrpc.CurrencyConverterBlockingStub blockingStub;
 
-    GrpcClient(String host, int port) {
+    public GrpcClient(String host, int port) {
         this(
 
                 ManagedChannelBuilder
@@ -25,12 +25,12 @@ public class GrpcClient {
                         .build());
     }
 
-    GrpcClient(String target, ChannelCredentials channelCredentials) {
+    public GrpcClient(String target, ChannelCredentials channelCredentials) {
         this(Grpc.newChannelBuilder(target, channelCredentials).build());
     }
 
 
-    GrpcClient(ManagedChannel channel) {
+    public GrpcClient(ManagedChannel channel) {
         this.channel = channel;
         this.blockingStub = CurrencyConverterGrpc.newBlockingStub(channel);
     }
