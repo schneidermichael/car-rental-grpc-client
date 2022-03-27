@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "GrpcCurrencyConverter";
+option java_multiple_files = true;
+option java_package = "grpc.currency.converter";
+
+package currencyconverter;
+
+// The Currency Converter service definition
+service CurrencyConverter {
+
+	// Get Bearer Token for ListOfCurrencies, CurrencyPerSymbol and CalculatingCrossCurrency
+	rpc Login (LoginRequest) returns (LoginResponse);
+
+	// Get a List of available currencies
+	rpc ListOfCurrencies (google.protobuf.Empty) returns (ListOfCurrenciesResponse);
+
+	// Get only one specific currency
+	rpc CurrencyPerSymbol (CurrencyPerSymbolRequest) returns (CurrencyPerSymbolResponse);
+
+	// Calculating from currency X to currency Y
+	rpc CalculatingCrossCurrency (CalculatingCrossCurrencyRequest) returns (CalculatingCrossCurrencyResponse);
+}
+
+//The ListOfCurrenciesResponse message containing a list of currencies
+message ListOfCurrenciesResponse {
+	repeated Currency currencies = 1;
+}
+
+// The Currency message containing a three-letter symbol and the cross rate of the currency
+message Currency {
+	string symbol = 1;
+	double rate = 2;
+}
+
+// The CurrencyPerSymbolRequest message containing a three-letter symbol of the currency
+message CurrencyPerSymbolRequest {
+	string symbol = 1;
+}
+
+// The CurrencyPerSymbolResponse message containing one currency
+message CurrencyPerSymbolResponse {
+	Currency curreny = 1;
+}
+
+// The CalculatingCrossCurrencyRequest message containing a three-letter symbol as input, a three-letter symbol as output and an amount
+message CalculatingCrossCurrencyRequest {
+	string symbol_input = 1;
+	string symbol_output = 2;
+	double amount = 3;
+}
+
+// The CalculatingCrossCurrencyResponse message containg the result of the exchange
+message CalculatingCrossCurrencyResponse {
+	string symbol = 1;
+	double result = 2;
+}
+
+// The LoginRequest message contains the Credentials
+message LoginRequest {
+	string username = 1;
+	string password = 2;
+}
+
+// The LoginResponse message containing the Bearer Token
+message LoginResponse {
+	string token = 1;
+}
