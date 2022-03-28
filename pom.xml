@@ -6,7 +6,7 @@
 
     <groupId>io.github.schneidermichael</groupId>
     <artifactId>car-rental-grpc-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A lightweight Java SVG badge maker</description>
     <url>https://github.com/schneidermichael/car-rental-grpc-client</url>
