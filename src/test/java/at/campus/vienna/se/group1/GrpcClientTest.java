@@ -29,7 +29,7 @@ class GrpcClientTest {
 
         secureClient = new GrpcClient("localhost:7241", channelCredentials);
 
-        plainClient = new GrpcClient("localhost",49174);
+        plainClient = new GrpcClient("localhost",43174);
 
         LoginRequest request = LoginRequest.newBuilder().setPassword("car").setUsername("group1").build();
 
