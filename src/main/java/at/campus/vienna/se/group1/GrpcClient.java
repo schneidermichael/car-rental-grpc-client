@@ -105,18 +105,27 @@ public class GrpcClient {
      * @param token Bearer Token for Authorization
      * @return containg the result of the exchange
      */
-    public CalculatingCrossCurrencyResponse calculatingCrossCurrencyResponse(CalculatingCrossCurrencyRequest request, Token token) {
-        CalculatingCrossCurrencyResponse response =
-                blockingStub.withCallCredentials(token).calculatingCrossCurrency(CalculatingCrossCurrencyRequest
-                        .newBuilder()
-                        .setSymbolInput(request.getSymbolInput())
-                        .setSymbolOutput(request.getSymbolOutput())
-                        .setAmount(request.getAmount())
-                        .build());
-
-        LOGGER.log(Level.INFO, () -> "Response message of CalculatingCrossCurrencyResponse: " + response);
-
-        return response;
+    public CalculatingCrossCurrencyResponse calculatingCrossCurrencyResponse(CalculatingCrossCurrencyRequest request, Token token) throws ExpiredTokenException{
+        try {
+            CalculatingCrossCurrencyResponse response =
+                    blockingStub.withCallCredentials(token).calculatingCrossCurrency(CalculatingCrossCurrencyRequest
+                            .newBuilder()
+                            .setSymbolInput(request.getSymbolInput())
+                            .setSymbolOutput(request.getSymbolOutput())
+                            .setAmount(request.getAmount())
+                            .build());
+    
+            LOGGER.log(Level.INFO, () -> "Response message of CalculatingCrossCurrencyResponse: " + response);
+            
+            return response;
+            
+        } catch (StatusRuntimeException e) {
+            if(e.getMessage().contains("UNAUTHENTICATED")){
+                LOGGER.log(Level.WARNING, () -> "An error occurred while calculating cross currency: ".concat(e.getMessage()));
+                throw new ExpiredTokenException(e.getMessage());
+            }
+            throw e;
+        }
     }
 
     /**

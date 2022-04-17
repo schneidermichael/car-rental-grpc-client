@@ -6,7 +6,7 @@
 
     <groupId>io.github.schneidermichael</groupId>
     <artifactId>car-rental-grpc-client</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A gRPC Client for a university project</description>
     <url>https://github.com/schneidermichael/car-rental-grpc-client</url>
@@ -22,6 +22,11 @@
             <id>schneidermichael</id>
             <name>Michael Schneider</name>
             <email>michael.schneider@stud.fh-campuswien.ac.at</email>
+        </developer>
+        <developer>
+            <id>caf3babe</id>
+            <name>Nichil Strasser</name>
+            <email>nichil.strasser@stud.fh-campuswien.ac.at</email>
         </developer>
     </developers>
     <scm>

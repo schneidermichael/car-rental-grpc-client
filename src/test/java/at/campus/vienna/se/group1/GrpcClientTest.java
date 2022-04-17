@@ -110,7 +110,7 @@ class GrpcClientTest {
 
     @Test
     @Disabled
-    void calculatingCrossCurrencySecureTest(){
+    void calculatingCrossCurrencySecureTest() throws ExpiredTokenException {
         //Arrange
         CalculatingCrossCurrencyRequest request = CalculatingCrossCurrencyRequest
                 .newBuilder()
@@ -126,7 +126,7 @@ class GrpcClientTest {
     }
 
     @Test
-    void calculatingCrossCurrencyInSecureTest(){
+    void calculatingCrossCurrencyInSecureTest() throws ExpiredTokenException {
         //Arrange
         CalculatingCrossCurrencyRequest request = CalculatingCrossCurrencyRequest
                 .newBuilder()
