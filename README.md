@@ -2,6 +2,7 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.schneidermichael/car-rental-grpc-client?color=green)
 [![codecov](https://codecov.io/gh/schneidermichael/car-rental-grpc-client/branch/master/graph/badge.svg?token=FLA88QPEMN)](https://codecov.io/gh/schneidermichael/car-rental-grpc-client)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=schneidermichael_car-rental-grpc-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=schneidermichael_car-rental-grpc-client)
 # car-rental-grpc-client
 
 # Dependency
