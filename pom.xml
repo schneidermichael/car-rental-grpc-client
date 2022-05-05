@@ -45,6 +45,8 @@
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
         <org.testcontainers.version>1.17.1</org.testcontainers.version>
         <slf4j.version>2.0.0-alpha7</slf4j.version>
+        <sonar.organization>schneidermichael</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
 
