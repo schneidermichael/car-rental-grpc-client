@@ -1,33 +1,45 @@
 package at.campus.vienna.se.group1;
 
+import com.github.dockerjava.api.command.CreateContainerCmd;
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports;
 import grpc.currency.converter.*;
-import io.grpc.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Testcontainers
 class GrpcClientTest {
 
-    static GrpcClient secureClient;
+    static int hostPort = 43174;
+    static int containerExposedPort = 80;
+    static Consumer<CreateContainerCmd> cmd = e -> e.withPortBindings(new PortBinding(Ports.Binding.bindPort(hostPort), new ExposedPort(containerExposedPort)));
+
+    @Container
+    static
+    GenericContainer currencyConverter = new GenericContainer(DockerImageName.parse("michaelxschneider/carrentalconverter:0.0.3"))
+            .withExposedPorts(containerExposedPort)
+            .withCreateContainerCmdModifier(cmd);
+
+
     static GrpcClient plainClient;
     static LoginResponse login;
     static Token token;
 
     @BeforeAll
-    static void setup() throws IOException {
+    static void setup()  {
 
-        ChannelCredentials channelCredentials = TlsChannelCredentials.newBuilder()
-                .trustManager(new File("src/main/resources/car-rental-converter.cer"))
-                .build();
-
-        secureClient = new GrpcClient("localhost:7241", channelCredentials);
+        currencyConverter.start();
 
         plainClient = new GrpcClient("localhost",43174);
 
@@ -40,30 +52,10 @@ class GrpcClientTest {
     }
 
     @Test
-    @Disabled
-    void LoginSecureTest() {
-
-        //Assert
-        assertNotNull(token);
-    }
-
-    @Test
     void LoginInSecureTest() {
 
         //Assert
         assertNotNull(token);
-    }
-
-    @Test
-    @Disabled
-    void listOfCurrenciesSecureTest(){
-        //Arrange
-
-        //Act
-        ListOfCurrenciesResponse response = secureClient.listOfCurrencies(token);
-
-        //Assert
-        assertEquals(32, response.getCurrenciesList().size());
     }
 
     @Test
@@ -75,22 +67,6 @@ class GrpcClientTest {
 
         //Assert
         assertEquals(32, response.getCurrenciesList().size());
-    }
-
-    @Test
-    @Disabled
-    void currencyPerSymbolSecureTest(){
-        //Arrange
-        CurrencyPerSymbolRequest request = CurrencyPerSymbolRequest
-                .newBuilder()
-                .setSymbol("USD")
-                .build();
-
-        //Act
-        CurrencyPerSymbolResponse response = secureClient.currencyPerSymbolResponse(request,token);
-
-        //Assert
-        assertEquals(request.getSymbol(),response.getCurreny().getSymbol());
     }
 
     @Test
@@ -106,23 +82,6 @@ class GrpcClientTest {
 
         //Assert
         assertEquals(request.getSymbol(),response.getCurreny().getSymbol());
-    }
-
-    @Test
-    @Disabled
-    void calculatingCrossCurrencySecureTest() throws ExpiredTokenException {
-        //Arrange
-        CalculatingCrossCurrencyRequest request = CalculatingCrossCurrencyRequest
-                .newBuilder()
-                .setSymbolInput("USD")
-                .setSymbolOutput("EUR")
-                .setAmount(5.0).build();
-
-        //Act
-        CalculatingCrossCurrencyResponse response = secureClient.calculatingCrossCurrencyResponse(request,token);
-
-        //Assert
-        assertEquals(request.getSymbolOutput(),response.getSymbol());
     }
 
     @Test
@@ -144,6 +103,7 @@ class GrpcClientTest {
     @AfterAll
     static void teardown() throws InterruptedException {
         plainClient.shutdown();
+        currencyConverter.stop();
     }
 
 }

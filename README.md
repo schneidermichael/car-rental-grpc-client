@@ -11,6 +11,6 @@
 <dependency>
     <groupId>io.github.schneidermichael</groupId>
     <artifactId>car-rental-grpc-client</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```

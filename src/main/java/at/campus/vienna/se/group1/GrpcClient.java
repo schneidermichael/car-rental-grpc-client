@@ -34,15 +34,6 @@ public class GrpcClient {
     }
 
     /**
-     * Generate a client with TLS
-     * @param target Combination of Host and Port - host:port
-     * @param channelCredentials TlsChannelCredentials with your certificate
-     */
-    public GrpcClient(String target, ChannelCredentials channelCredentials) {
-        this(Grpc.newChannelBuilder(target, channelCredentials).build());
-    }
-
-    /**
      * General constructor
      * @param channel
      */
