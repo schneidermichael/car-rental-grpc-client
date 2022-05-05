@@ -5,6 +5,7 @@ import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
 import grpc.currency.converter.*;
+import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 class GrpcClientTest {
@@ -98,6 +98,19 @@ class GrpcClientTest {
 
         //Assert
         assertEquals(request.getSymbolOutput(),response.getSymbol());
+    }
+
+    @Test
+    void whenExpiredTokenExceptionThrown_thenAssertionSucceeds() {
+
+        ExpiredTokenException exception = assertThrows(ExpiredTokenException.class, () -> {
+            throw new ExpiredTokenException("UNAUTHENTICATED");
+        });
+
+        String expectedMessage = "UNAUTHENTICATED";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @AfterAll
